@@ -1,0 +1,54 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Ticket {
+  id        String  @id
+  user      User    @relation(fields: [userId], references: [id])
+  item      Item    @relation(fields: [itemId], references: [id])
+  channelId String
+  closed    Boolean @default(false)
+  itemId    String
+  userId    String
+}
+
+model Item {
+  id       String   @id @default(cuid())
+  name     String
+  price    Int
+  imageUrl String
+  Ticket   Ticket[]
+  Raffle   Raffle[]
+}
+
+model User {
+  id      String   @id
+  balance Int      @default(0)
+  Ticket  Ticket[]
+  Entry   Entry[]
+}
+
+model Raffle {
+  id       String   @id @default(uuid())
+  item     Item     @relation(fields: [itemId], references: [id])
+  endingAt DateTime
+  itemId   String
+  Entry    Entry[]
+}
+
+model Entry {
+  id       String @id @default(uuid())
+  user     User   @relation(fields: [userId], references: [id])
+  raffle   Raffle @relation(fields: [raffleId], references: [id])
+  userId   String
+  raffleId String
+  entries  Int    @default(0)
+}

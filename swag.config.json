@@ -1,0 +1,13 @@
+{
+  "bot": {
+    "token": "",
+    "prefix": ""
+  },
+  "paths": {
+    "main": "src",
+    "commands": "commands",
+    "events": "events",
+    "features": "features"
+  },
+  "mongoUri": ""
+}
